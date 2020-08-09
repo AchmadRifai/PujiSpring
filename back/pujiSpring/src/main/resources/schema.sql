@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS `kat_menu`(`kode` int primary key,`nama` varchar(15)NOT NULL,`gbr` text NOT NULL);
+CREATE TABLE IF NOT EXISTS `menu`(`kode` varchar(20)primary key,`kat` int NOT NULL,`harga` decimal(65,10) NOT NULL,`gbr` text NOT NULL,`nama` varchar(30)NOT NULL,`satuan` varchar(20)NOT NULL);
+alter table menu add foreign key(kat)references kat_menu(kode)on update cascade on delete cascade;
+CREATE TABLE IF NOT EXISTS `karyawan`(`kode` varchar(20)primary key,`pass` varchar(20)NOT NULL,`nama` varchar(40)NOT NULL,`almt` text NOT NULL,`jab` varchar(10)NOT NULL,`mlebu` boolean NOT NULL);
+CREATE TABLE IF NOT EXISTS `meja` (`nomor` int(11)primary key,`ket` text NOT NULL);
+CREATE TABLE IF NOT EXISTS `persediaan` (`kode` varchar(30)primary key,`nama` varchar(30)NOT NULL,`stok` float NOT NULL,`satuan` varchar(20)NOT NULL);
+CREATE TABLE IF NOT EXISTS `bahan` (nomor int primary key AUTO_INCREMENT,`menu` varchar(20)NOT NULL,`bahan` varchar(30)NOT NULL,`qty` float NOT NULL);
+alter table bahan add foreign key(menu)references menu(kode)on update cascade on delete cascade;
+alter table bahan add foreign key(bahan)references persediaan(kode)on update cascade on delete cascade;
+CREATE TABLE IF NOT EXISTS `pesanan`(`nota` varchar(30)primary key,`meja` int NOT NULL,`tgl` date NOT NULL,jam time not null,`byr` decimal(65,10)NOT NULL,`susuk` decimal(65,10)NOT NULL,`total` decimal(65,10)NOT NULL,`terima` boolean NOT NULL,`cetak` boolean NOT NULL,pergi boolean not null);
+alter table pesanan add foreign key(meja)references meja(nomor)on update cascade on delete cascade;
+CREATE TABLE IF NOT EXISTS `item_pesanan` (nomor int primary key AUTO_INCREMENT,`nota` varchar(20) NOT NULL,`menu` varchar(20) NOT NULL,`qty` int NOT NULL,sat decimal(65,10)NOT NULL,tot decimal(65,10)NOT NULL);
+alter table item_pesanan add foreign key(nota)references pesanan(nota)on update cascade on delete cascade;
+alter table item_pesanan add foreign key(menu)references menu(kode)on update cascade on delete cascade;
